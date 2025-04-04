@@ -1,0 +1,74 @@
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Open+Sans:wght@400;500;600&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    @apply scroll-pt-20;
+  }
+
+  body {
+    font-family: "Open Sans", sans-serif;
+    @apply text-gray-700 bg-white;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: "Montserrat", sans-serif;
+    @apply font-semibold;
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply px-4 py-2 text-sm font-semibold text-white transition-all duration-300 rounded-lg sm:px-6 sm:py-3 sm:text-base bg-accent hover:bg-accent/90 hover:shadow-lg focus:ring-2 focus:ring-accent/50 focus:outline-none;
+  }
+
+  .section-padding {
+    @apply px-4 py-12 sm:py-16 md:py-20 md:px-8 lg:px-16;
+  }
+
+  .nav-link {
+    @apply text-gray-200 hover:text-white transition-colors duration-300 px-3 py-1.5 sm:px-4 sm:py-2;
+  }
+
+  .service-card {
+    @apply p-4 transition-all duration-300 bg-white shadow-md sm:p-6 rounded-xl hover:shadow-xl hover:-translate-y-1;
+  }
+
+  .focus-visible {
+    @apply outline-none ring-2 ring-accent ring-offset-2;
+  }
+
+  button:focus-visible,
+  a:focus-visible,
+  input:focus-visible,
+  textarea:focus-visible,
+  select:focus-visible {
+    @apply focus-visible;
+  }
+}
+
+.testimonial-slider {
+  @apply relative overflow-hidden;
+}
+
+/* Add new responsive utility classes */
+.responsive-container {
+  @apply w-full px-4 mx-auto sm:max-w-xl md:max-w-3xl lg:max-w-5xl xl:max-w-6xl;
+}
+
+.responsive-text {
+  @apply text-sm sm:text-base md:text-lg;
+}
+
+.responsive-heading {
+  @apply text-xl font-bold sm:text-2xl md:text-3xl lg:text-4xl;
+}
