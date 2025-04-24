@@ -16,9 +16,13 @@ import { useInView } from "react-intersection-observer";
 const LazyPartnersBanner = lazy(() => import("./components/PartnersBanner"));
 const LazyContact = lazy(() => import("./components/Contact"));
 const LazyHeader = lazy(() => import("./components/Header"));
-const LazyPortfolio = lazy(() => import("./components/Portfolio"));
+const LazyPortfolio = lazy(() =>
+  import("./components/Portfolio").then((module) => ({
+    default: module.Portfolio,
+  })),
+);
 
-const ComponentLoader = () => (
+export const ComponentLoader = () => (
   <div className="flex items-center justify-center w-full h-64">
     <div className="w-8 h-8 border-4 rounded-full border-accent/20 border-t-accent animate-spin"></div>
   </div>
@@ -375,7 +379,6 @@ const Footer = () => {
                 "À propos",
                 "Services",
                 "Travaux réalisés",
-                "Témoignages",
                 "Contact",
               ].map((item) => (
                 <li key={item}>

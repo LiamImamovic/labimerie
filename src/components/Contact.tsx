@@ -178,9 +178,8 @@ const Contact = () => {
                 </div>
               </div>
             </div>
-
+            {/* 
             <div className="h-64 overflow-hidden transition-all duration-300 bg-gray-200 rounded-lg shadow-md hover:shadow-lg">
-              {/* Placeholder de carte avec effet de survol */}
               <div className="relative flex items-center justify-center w-full h-full bg-gray-300 rounded-lg group">
                 <div
                   className="absolute inset-0 transition-opacity duration-500 bg-center bg-cover opacity-70 group-hover:opacity-90"
@@ -198,7 +197,7 @@ const Contact = () => {
                   </p>
                 </div>
               </div>
-            </div>
+            </div> */}
           </motion.div>
         </div>
       </div>

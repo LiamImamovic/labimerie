@@ -18,7 +18,6 @@ const navItems: NavItem[] = [
     href: "#travaux-réalisés",
     id: "travaux-réalisés",
   },
-  { name: "Témoignages", href: "#témoignages", id: "témoignages" },
   { name: "Contact", href: "#contact", id: "contact" },
 ];
 

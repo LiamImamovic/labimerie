@@ -1,105 +1,83 @@
-import { AnimatePresence, motion } from "framer-motion";
-import { ArrowRight, Send, X } from "lucide-react";
-import { useState } from "react";
-import { useInView } from "react-intersection-observer";
+import { useEffect, useState } from "react";
+import { getProjects } from "../services/api";
+
+// Type adapté à la structure réelle
+type ProjectImage = {
+  id: number;
+  name: string;
+  url?: string;
+  formats?: {
+    thumbnail: {
+      url: string;
+    };
+  };
+  // autres propriétés possibles
+};
 
 type Project = {
-  id: string;
+  id: number;
   title: string;
   category: string;
-  image: string;
   description: string;
   client: string;
   year: string;
+  image: ProjectImage;
+  // autres propriétés
 };
 
-const projects: Project[] = [
-  {
-    id: "projet-1",
-    title: "Tour Résidentielle Horizon",
-    category: "Modélisation BIM",
-    image:
-      "https://images.unsplash.com/photo-1486718448742-163732cd1544?auto=format&fit=crop&q=80&w=800&h=600",
-    description:
-      "Modélisation BIM complète d'une tour résidentielle de 32 étages avec coordination MEP avancée.",
-    client: "Groupe Immobilier Métropole",
-    year: "2023",
-  },
-  {
-    id: "projet-2",
-    title: "Campus Universitaire Nova",
-    category: "Coordination BIM",
-    image:
-      "https://images.unsplash.com/photo-1497366811353-6870744d04b2?auto=format&fit=crop&q=80&w=800&h=600",
-    description:
-      "Coordination BIM multi-disciplinaire pour un campus universitaire de 5 bâtiments sur 12 hectares.",
-    client: "Université Technologique",
-    year: "2022",
-  },
-  {
-    id: "projet-3",
-    title: "Hôpital Central",
-    category: "Gestion BIM",
-    image:
-      "https://images.unsplash.com/photo-1538685634737-24b83e3fa2f8?auto=format&fit=crop&q=80&w=800&h=600",
-    description:
-      "Mise en place d'un workflow BIM collaboratif pour la construction d'un hôpital de 250 lits.",
-    client: "Centre Hospitalier Régional",
-    year: "2022",
-  },
-  {
-    id: "projet-4",
-    title: "Rénovation Quartier Historique",
-    category: "Numérisation 3D",
-    image:
-      "https://images.unsplash.com/photo-1541971875076-8f970d573be6?auto=format&fit=crop&q=80&w=800&h=600",
-    description:
-      "Scan 3D et modélisation BIM d'un quartier historique pour projet de rénovation urbaine.",
-    client: "Ville de Saint-Martin",
-    year: "2021",
-  },
-  {
-    id: "projet-5",
-    title: "Centre Commercial Étoile",
-    category: "Coordination BIM",
-    image:
-      "https://images.unsplash.com/photo-1555443805-658637491dd4?auto=format&fit=crop&q=80&w=800&h=600",
-    description:
-      "Coordination BIM pour un centre commercial de 45 000 m² avec plus de 80 boutiques.",
-    client: "Développeurs Commerciaux Associés",
-    year: "2021",
-  },
-  {
-    id: "projet-6",
-    title: "Pont Suspension Marina",
-    category: "Infrastructure BIM",
-    image:
-      "https://images.unsplash.com/photo-1506422748879-887454f9cdff?auto=format&fit=crop&q=80&w=800&h=600",
-    description:
-      "Modélisation BIM pour un pont à suspension de 320 mètres avec prise en compte des contraintes environnementales.",
-    client: "Département des Infrastructures",
-    year: "2020",
-  },
-];
-
-const allCategories = [
-  "Tous",
-  ...Array.from(new Set(projects.map((project) => project.category))),
-];
-
-const Portfolio = () => {
-  const [selectedCategory, setSelectedCategory] = useState("Tous");
+export const Portfolio = () => {
+  const [projects, setProjects] = useState<Project[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
+  const [selectedCategory, setSelectedCategory] = useState("Tous");
 
-  const { ref } = useInView({
-    threshold: 0.1,
-    triggerOnce: true,
-  });
+  useEffect(() => {
+    const fetchProjects = async () => {
+      try {
+        const data = await getProjects();
+        console.log("Données reçues:", data);
+        setProjects(data || []);
+      } catch (err) {
+        setError("Erreur lors du chargement des projets");
+        console.error(err);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchProjects();
+  }, []);
+
+  useEffect(() => {
+    // Reset selected project when category changes
+    setSelectedProject(null);
+  }, [selectedCategory]);
+
+  if (isLoading) {
+    return <div className="flex justify-center py-12">Chargement...</div>;
+  }
+
+  if (error) {
+    return <div className="py-12 text-center text-red-500">{error}</div>;
+  }
+
+  if (!projects || projects.length === 0) {
+    return <div className="py-12 text-center">Aucun projet trouvé.</div>;
+  }
+
+  // Extraire les catégories
+  const categories = [
+    "Tous",
+    ...Array.from(
+      new Set(projects.filter((p) => p?.category).map((p) => p.category)),
+    ),
+  ];
 
   const filteredProjects =
     selectedCategory === "Tous"
       ? projects
-      : projects.filter((project) => project.category === selectedCategory);
+      : projects.filter((p) => p.category === selectedCategory);
 
   return (
     <section id="travaux-réalisés" className="bg-white section-padding">
@@ -113,7 +91,7 @@ const Portfolio = () => {
 
         {/* Filtres par catégorie */}
         <div className="flex flex-wrap justify-center gap-2 mb-8 md:gap-4">
-          {allCategories.map((category) => (
+          {categories.map((category) => (
             <button
               key={category}
               onClick={() => setSelectedCategory(category)}
@@ -129,31 +107,32 @@ const Portfolio = () => {
         </div>
 
         {/* Grille de projets */}
-        <div
-          ref={ref}
-          className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3"
-        >
+        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {filteredProjects.map((project) => (
-            <motion.div
+            <div
               key={project.id}
-              // initial={{ opacity: 0, y: 30 }}
-              // animate={inView ? { opacity: 1, y: 0 } : {}}
               className="overflow-hidden transition-all duration-300 bg-white rounded-lg shadow-md group hover:shadow-xl"
               onClick={() => setSelectedProject(project)}
             >
               <div className="relative overflow-hidden cursor-pointer h-60">
-                <img
-                  src={project.image}
-                  alt={project.title}
-                  className="object-cover w-full h-full transition-transform duration-500 group-hover:scale-110"
-                  loading="lazy"
-                  width={800}
-                  height={600}
-                />
+                {project.image ? (
+                  <img
+                    src={`http://localhost:1337${project.image.url}`}
+                    alt={project.title}
+                    className="object-cover w-full h-full transition-transform duration-500 group-hover:scale-110"
+                    loading="lazy"
+                    width={800}
+                    height={600}
+                  />
+                ) : (
+                  <div className="flex items-center justify-center w-full h-full bg-gray-200">
+                    <span>Image non disponible</span>
+                  </div>
+                )}
                 <div className="absolute inset-0 transition-opacity duration-300 opacity-0 bg-gradient-to-t from-primary/80 to-transparent group-hover:opacity-100"></div>
                 <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100">
                   <button className="flex items-center gap-2 px-4 py-2 font-medium transition-all duration-300 transform translate-y-4 bg-white rounded-full text-primary group-hover:translate-y-0">
-                    Voir détails <ArrowRight className="w-4 h-4" />
+                    Voir détails
                   </button>
                 </div>
               </div>
@@ -168,91 +147,66 @@ const Portfolio = () => {
                   {project.description}
                 </p>
               </div>
-            </motion.div>
+            </div>
           ))}
         </div>
 
-        {/* Modal pour afficher les détails du projet */}
-        <AnimatePresence>
-          {selectedProject && (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70"
-              onClick={() => setSelectedProject(null)}
+        {/* Modal pour projet sélectionné */}
+        {selectedProject && (
+          <div
+            className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70"
+            onClick={() => setSelectedProject(null)}
+          >
+            <div
+              className="bg-white rounded-lg max-w-4xl w-full max-h-[90vh] overflow-auto"
+              onClick={(e) => e.stopPropagation()}
             >
-              <motion.div
-                initial={{ scale: 0.9, y: 20 }}
-                animate={{ scale: 1, y: 0 }}
-                exit={{ scale: 0.9, y: 20 }}
-                transition={{ type: "spring", damping: 25 }}
-                className="relative flex flex-col w-full max-w-4xl max-h-[90vh] overflow-auto rounded-lg bg-white shadow-2xl"
-                onClick={(e) => e.stopPropagation()}
-              >
-                <button
-                  className="absolute p-1 transition-colors duration-300 rounded-full right-4 top-4 bg-white/80 hover:bg-accent hover:text-white"
-                  onClick={() => setSelectedProject(null)}
-                >
-                  <X className="w-6 h-6" />
-                </button>
-
-                <div className="grid grid-cols-1 md:grid-cols-2">
-                  <div className="relative h-72 md:h-full">
+              {/* Contenu détaillé du projet */}
+              <div className="grid grid-cols-1 md:grid-cols-2">
+                <div className="relative h-72 md:h-full">
+                  {selectedProject.image && selectedProject.image.url ? (
                     <img
-                      src={selectedProject.image}
+                      src={`http://localhost:1337${selectedProject.image.url}`}
                       alt={selectedProject.title}
                       className="object-cover w-full h-full"
                     />
-                  </div>
-                  <div className="p-6">
-                    <span className="inline-block px-2 py-1 mb-2 text-sm font-medium rounded-md text-accent-dark bg-accent/10">
-                      {selectedProject.category}
-                    </span>
-                    <h2 className="mb-4 text-2xl font-bold text-primary">
-                      {selectedProject.title}
-                    </h2>
-                    <div className="mb-6 space-y-4">
-                      <p className="text-gray-700">
-                        {selectedProject.description}
-                      </p>
-                      <div className="grid grid-cols-2 gap-4 p-4 rounded-lg bg-gray-50">
-                        <div>
-                          <h4 className="text-sm font-semibold text-gray-500">
-                            Client
-                          </h4>
-                          <p className="font-medium text-primary">
-                            {selectedProject.client}
-                          </p>
-                        </div>
-                        <div>
-                          <h4 className="text-sm font-semibold text-gray-500">
-                            Année
-                          </h4>
-                          <p className="font-medium text-primary">
-                            {selectedProject.year}
-                          </p>
-                        </div>
-                      </div>
+                  ) : (
+                    <div className="flex items-center justify-center w-full h-full bg-gray-200">
+                      <span>Image non disponible</span>
                     </div>
-                    <button
-                      className="flex items-center gap-2 px-6 py-3 font-medium text-white transition-all duration-300 rounded-full bg-accent hover:bg-accent/90"
-                      onClick={() => {
-                        window.location.href = "#contact";
-                        setSelectedProject(null);
-                      }}
-                    >
-                      Demander un projet similaire <Send className="w-4 h-4" />
-                    </button>
+                  )}
+                </div>
+                <div className="p-6">
+                  <h2 className="mb-4 text-2xl font-bold text-primary">
+                    {selectedProject.title}
+                  </h2>
+                  <p className="mb-4 text-gray-700">
+                    {selectedProject.description}
+                  </p>
+                  <div className="grid grid-cols-2 gap-4 p-4 rounded-lg bg-gray-50">
+                    <div>
+                      <h4 className="text-sm font-semibold text-gray-500">
+                        Client
+                      </h4>
+                      <p className="font-medium text-primary">
+                        {selectedProject.client}
+                      </p>
+                    </div>
+                    <div>
+                      <h4 className="text-sm font-semibold text-gray-500">
+                        Année
+                      </h4>
+                      <p className="font-medium text-primary">
+                        {selectedProject.year}
+                      </p>
+                    </div>
                   </div>
                 </div>
-              </motion.div>
-            </motion.div>
-          )}
-        </AnimatePresence>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </section>
   );
 };
-
-export default Portfolio;
