@@ -69,9 +69,13 @@ const Hero = () => {
         </motion.button>
       </motion.div>
 
-      <div className="absolute p-1 transition-all duration-300 transform -translate-x-1/2 rounded-full sm:p-2 md:p-3 bottom-4 sm:bottom-6 md:bottom-8 left-1/2 animate-bounce hover:bg-accent/20">
-        <a href="#à-propos" aria-label="Scroll to next section">
-          <ChevronRight className="w-16 text-white rotate-90 sm:w-24 sm:h-24 md:w-32 md:h-32" />
+      <div className="absolute flex items-center justify-center p-1 transition-all duration-300 transform -translate-x-1/2 rounded-full bottom-4 sm:bottom-6 md:bottom-8 left-1/2 hover:bg-accent/20">
+        <a
+          href="#à-propos"
+          aria-label="Scroll to next section"
+          className="flex items-center justify-center"
+        >
+          <ChevronRight className="w-6 h-6 text-white rotate-90 sm:w-8 sm:h-8 md:w-12 md:h-12" />
         </a>
       </div>
     </section>
@@ -167,7 +171,7 @@ const Services = () => {
       description:
         "Des modèles clairs et organisés pour tous vos projets, neufs ou en rénovation.",
       longDescription:
-        "Je modélise vos projets en BIM pour qu’ils soient faciles à lire, à partager et à coordonner. L’objectif est de fluidifier la communication entre les intervenants, d’éviter les erreurs sur le chantier et de gagner un temps précieux à chaque étape du projet.",
+        "Je modélise vos projets en BIM pour qu'ils soient faciles à lire, à partager et à coordonner. L'objectif est de fluidifier la communication entre les intervenants, d'éviter les erreurs sur le chantier et de gagner un temps précieux à chaque étape du projet.",
       features: [
         "Modélisation architecturale pour projets neufs et rénovations",
         "Utilisation de normes et conventions BIM",
@@ -182,7 +186,7 @@ const Services = () => {
       description:
         "Des visuels 3D percutants pour valoriser vos idées et convaincre vos clients.",
       longDescription:
-        "Je crée des rendus 3D réalistes et soignés pour mettre en valeur vos projets. Que ce soit pour une présentation client, une mise en vente ou un concours, je vous aide à capter l’attention avec des visuels impactants. Je peux aussi intervenir ponctuellement pour soulager vos équipes en cas de surcharge.",
+        "Je crée des rendus 3D réalistes et soignés pour mettre en valeur vos projets. Que ce soit pour une présentation client, une mise en vente ou un concours, je vous aide à capter l'attention avec des visuels impactants. Je peux aussi intervenir ponctuellement pour soulager vos équipes en cas de surcharge.",
       features: [
         "Rendus réalistes haute qualité",
         "Mise en valeur des matériaux et de la lumière",
@@ -197,7 +201,7 @@ const Services = () => {
       description:
         "Structuration et coordination de projets BIM pour un déroulement fluide et maîtrisé.",
       longDescription:
-        "Je vous accompagne dans la gestion de vos projets BIM, de la structuration des maquettes à la coordination entre disciplines. L’objectif : anticiper les problèmes, fluidifier les échanges, et faire avancer le projet sans accroc, tout en garantissant la qualité et la cohérence des livrables.",
+        "Je vous accompagne dans la gestion de vos projets BIM, de la structuration des maquettes à la coordination entre disciplines. L'objectif : anticiper les problèmes, fluidifier les échanges, et faire avancer le projet sans accroc, tout en garantissant la qualité et la cohérence des livrables.",
       features: [
         "Mise en place de la stratégie BIM",
         "Organisation et structuration des maquettes",
@@ -208,14 +212,14 @@ const Services = () => {
     },
     {
       icon: <FileCheck2 className="w-10 h-10 sm:w-12 sm:h-12" />,
-      title: "Relevé de l’Existant",
+      title: "Relevé de l'Existant",
       description:
-        "Création de modèles 3D précis à partir de l’existant pour vos projets de rénovation ou d’extension.",
+        "Création de modèles 3D précis à partir de l'existant pour vos projets de rénovation ou d'extension.",
       longDescription:
-        "Je réalise des relevés de bâtiments existants via mesures terrain ou à partir de nuages de points, pour produire des modèles 3D à jour et exploitables. C’est un outil clé pour bien démarrer un projet de rénovation ou une étude de faisabilité, avec une base fiable et complète.",
+        "Je réalise des relevés de bâtiments existants via mesures terrain ou à partir de nuages de points, pour produire des modèles 3D à jour et exploitables. C'est un outil clé pour bien démarrer un projet de rénovation ou une étude de faisabilité, avec une base fiable et complète.",
       features: [
         "Relevés sur site ou exploitation de nuages de points",
-        "Modélisation fidèle de l’existant",
+        "Modélisation fidèle de l'existant",
         "Formats compatibles avec votre environnement BIM",
         "Support pour études de faisabilité",
         "Base de travail fiable pour rénovation ou extension",
@@ -374,18 +378,18 @@ const Footer = () => {
             </h3>
             <ul className="grid grid-cols-2 gap-2 sm:space-y-2 sm:block">
               {[
-                "Accueil",
-                "À propos",
-                "Services",
-                "Travaux réalisés",
-                "Contact",
+                { name: "Accueil", href: "#accueil" },
+                { name: "À propos", href: "#à-propos" },
+                { name: "Services", href: "#services" },
+                { name: "Travaux réalisés", href: "#travaux-réalisés" },
+                { name: "Contact", href: "#contact" },
               ].map((item) => (
-                <li key={item}>
+                <li key={item.name}>
                   <a
-                    href={`#${item.toLowerCase()}`}
+                    href={item.href}
                     className="flex items-center text-xs text-gray-300 transition-all duration-300 sm:text-base hover:text-white hover:translate-x-1"
                   >
-                    {item}
+                    {item.name}
                   </a>
                 </li>
               ))}

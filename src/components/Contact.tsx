@@ -1,26 +1,64 @@
+import axios from "axios";
 import { AnimatePresence, motion } from "framer-motion";
 import { useState } from "react";
 import { useInView } from "react-intersection-observer";
+
+type FormData = {
+  name: string;
+  email: string;
+  phone: string;
+  message: string;
+};
 
 const Contact = () => {
   const [formStatus, setFormStatus] = useState<
     "idle" | "loading" | "success" | "error"
   >("idle");
+  const [errorMessage, setErrorMessage] = useState("");
   const { ref, inView } = useInView({
     threshold: 0.1,
     triggerOnce: true,
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const [formData, setFormData] = useState<FormData>({
+    name: "",
+    email: "",
+    phone: "",
+    message: "",
+  });
+
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+  ) => {
+    const { id, value } = e.target;
+    setFormData((prev) => ({ ...prev, [id]: value }));
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setFormStatus("loading");
+    setErrorMessage("");
 
-    requestAnimationFrame(() => {
-      setTimeout(() => {
+    try {
+      // Appel à la nouvelle API serverless
+      const response = await axios.post("/api/send-email", formData);
+
+      if (response.data.success) {
         setFormStatus("success");
+        setFormData({ name: "", email: "", phone: "", message: "" });
         setTimeout(() => setFormStatus("idle"), 3000);
-      }, 800);
-    });
+      } else {
+        throw new Error(response.data.message || "Failed to send message");
+      }
+    } catch (error) {
+      setFormStatus("error");
+      setErrorMessage(
+        error instanceof Error
+          ? error.message
+          : "Une erreur s'est produite. Veuillez réessayer.",
+      );
+      setTimeout(() => setFormStatus("idle"), 3000);
+    }
   };
 
   return (
@@ -54,6 +92,8 @@ const Contact = () => {
                   type="text"
                   id="name"
                   required
+                  value={formData.name}
+                  onChange={handleChange}
                   className="w-full px-4 py-2 transition-all duration-300 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent focus:border-transparent"
                 />
               </div>
@@ -69,6 +109,8 @@ const Contact = () => {
                   type="email"
                   id="email"
                   required
+                  value={formData.email}
+                  onChange={handleChange}
                   className="w-full px-4 py-2 transition-all duration-300 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent focus:border-transparent"
                 />
               </div>
@@ -84,6 +126,8 @@ const Contact = () => {
                   type="tel"
                   id="phone"
                   required
+                  value={formData.phone}
+                  onChange={handleChange}
                   className="w-full px-4 py-2 transition-all duration-300 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent focus:border-transparent"
                 />
               </div>
@@ -98,6 +142,8 @@ const Contact = () => {
                 <textarea
                   id="message"
                   required
+                  value={formData.message}
+                  onChange={handleChange}
                   rows={4}
                   className="w-full px-4 py-2 transition-all duration-300 border border-gray-300 rounded-lg resize-none focus:ring-2 focus:ring-accent focus:border-transparent"
                 ></textarea>
@@ -147,6 +193,17 @@ const Contact = () => {
                     className="py-2 text-center text-green-600 rounded-lg bg-green-50"
                   >
                     ✓ Message envoyé avec succès !
+                  </motion.p>
+                )}
+
+                {formStatus === "error" && (
+                  <motion.p
+                    initial={{ opacity: 0, y: -10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -10 }}
+                    className="py-2 text-center text-red-600 rounded-lg bg-red-50"
+                  >
+                    ✗ {errorMessage}
                   </motion.p>
                 )}
               </AnimatePresence>
