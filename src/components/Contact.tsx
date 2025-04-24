@@ -166,11 +166,11 @@ const Contact = () => {
               <div className="space-y-3">
                 <div className="flex items-center gap-3 p-2 transition-colors duration-300 rounded-lg hover:bg-white">
                   <span className="text-xl">📍</span>
-                  <p>123 Avenue des Consultants, 75001 Paris</p>
+                  <p>4 rue rosa bonheur, 33680, Lacanau</p>
                 </div>
                 <div className="flex items-center gap-3 p-2 transition-colors duration-300 rounded-lg hover:bg-white">
                   <span className="text-xl">📞</span>
-                  <p>+33 1 23 45 67 89</p>
+                  <p>+33 7 86 88 91 00</p>
                 </div>
                 <div className="flex items-center gap-3 p-2 transition-colors duration-300 rounded-lg hover:bg-white">
                   <span className="text-xl">✉️</span>

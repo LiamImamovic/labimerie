@@ -1,36 +1,47 @@
 import axios from "axios";
 
-const API_URL = "http://localhost:1337";
+const API_URL = "https://labimerie-strapi.onrender.com";
+
 const API_TOKEN =
-  "de359517dcade716b7c87987d9bb94bc43552e84a3f2eed53aa9ae0d208cff557301eac998dc6551b29e87a6b7cbd12c840f6f302c1e4590ba61a0da709227298ca9e31d1c2693b289abcd092a361f4ba0c78a622670580b80363f7758cff7c87163dbbc5f0e5fc434baca7d4b465150bd79384c3d4c4d50978d1e42844bcced";
+  "2589822e8880ba3859957d7cc33ef20fc4d0e72e1c20c7aea9e6df00a083a17e7a74a83ed6398ad1634349e02c5bb74fcf5a9fc5381e664a4767271234a1a1216c4f1130b098332b8c87b4b9e714c2a10ef3f83bf86e26d40136451992c1306f801e267db7bbd187f45dbaefdcf6c8dd6a4f9fe158c408c8dcbc47f0e8bd1733";
+
+const apiClient = axios.create({
+  baseURL: API_URL,
+  headers: {
+    Authorization: `Bearer ${API_TOKEN}`,
+    "Content-Type": "application/json",
+    Accept: "application/json",
+  },
+  timeout: 10000,
+});
+
+export const getStrapiMediaUrl = (imageUrl: string): string | undefined => {
+  if (!imageUrl) return undefined;
+  return imageUrl.startsWith("/") ? `${API_URL}${imageUrl}` : imageUrl;
+};
 
 export const getProjects = async () => {
   try {
-    const response = await axios.get(`${API_URL}/api/projects`, {
-      headers: {
-        Authorization: `Bearer ${API_TOKEN}`,
-      },
-    });
-
+    const response = await apiClient.get("/api/projects?populate=*");
     return response.data.data;
   } catch (error) {
     console.error("Erreur lors de la récupération des projets:", error);
+    if (axios.isAxiosError(error) && error.response?.status === 401) {
+      console.error("Erreur d'authentification: Token API invalide");
+    }
     return [];
   }
 };
 
 export const getServices = async () => {
   try {
-    const response = await axios.get(`${API_URL}/api/services?populate=*`, {
-      headers: {
-        Authorization: `Bearer ${API_TOKEN}`,
-        "Content-Type": "application/json",
-        Accept: "application/json",
-      },
-    });
+    const response = await apiClient.get("/api/services?populate=*");
     return response.data.data;
   } catch (error) {
     console.error("Erreur lors de la récupération des services:", error);
+    if (axios.isAxiosError(error) && error.response?.status === 401) {
+      console.error("Erreur d'authentification: Token API invalide");
+    }
     return [];
   }
 };

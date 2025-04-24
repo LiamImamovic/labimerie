@@ -94,9 +94,9 @@ const About = () => {
       >
         <div className="relative order-2 overflow-hidden rounded-lg shadow-xl group md:order-1">
           <img
-            src="https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&q=80&w=800"
+            src="/images/thomas.JPEG"
             alt="Portrait du consultant BIM"
-            className="w-full h-auto transition-transform duration-700 group-hover:scale-105"
+            className="object-cover w-full h-auto transition-all duration-700 rounded-lg shadow-md group-hover:scale-105 group-hover:saturate-110"
             loading="lazy"
             width="800"
             height="600"
@@ -106,13 +106,13 @@ const About = () => {
 
         <div className="order-1 md:order-2">
           <h2 className="relative inline-block mb-4 text-2xl font-bold sm:text-3xl text-primary sm:mb-6">
-            15 ans d'expertise en BIM
+            5 ans d'expertise en BIM
             <span className="absolute bottom-0 left-0 w-1/2 h-1 rounded-full bg-accent"></span>
           </h2>
           <p className="mb-6 text-base sm:text-lg">
-            Expert certifié en modélisation des informations du bâtiment (BIM),
+            Ingénieur Génie civil Spécialisé en numérique pour la construction,
             j'accompagne les professionnels de la construction dans leur
-            transition numérique depuis plus de 15 ans.
+            transition vers le numérique en les aidant dans leurs démarches BIM.
           </p>
 
           <div className="space-y-4">
@@ -121,10 +121,9 @@ const About = () => {
             </h3>
             <ul className="space-y-2 sm:space-y-3">
               {[
-                "Autodesk Certified Professional",
-                "BIM Level 2 Certified Practitioner",
-                "ISO 19650 Certified",
-                "PMP Certified Project Manager",
+                "BTS Géomètre topographe et modélisation numérique",
+                "Licence BIM",
+                "Master Ingénierie numérique - BIM",
               ].map((cert, index) => (
                 <motion.li
                   key={cert}
@@ -166,60 +165,60 @@ const Services = () => {
       icon: <Building2 className="w-10 h-10 sm:w-12 sm:h-12" />,
       title: "Modélisation BIM",
       description:
-        "Évaluation complète de vos processus BIM actuels et recommandations stratégiques pour optimiser votre workflow.",
+        "Des modèles clairs et organisés pour tous vos projets, neufs ou en rénovation.",
       longDescription:
-        "Notre service de modélisation BIM vous offre une représentation numérique complète et précise de vos projets de construction. Nous utilisons les dernières technologies pour créer des modèles 3D riches en informations qui facilitent la coordination, réduisent les erreurs et optimisent les coûts tout au long du cycle de vie du bâtiment.",
+        "Je modélise vos projets en BIM pour qu’ils soient faciles à lire, à partager et à coordonner. L’objectif est de fluidifier la communication entre les intervenants, d’éviter les erreurs sur le chantier et de gagner un temps précieux à chaque étape du projet.",
       features: [
-        "Modélisation architecturale détaillée",
-        "Modélisation des systèmes MEP (mécanique, électricité, plomberie)",
-        "Modélisation structurelle",
-        "Détection de conflits",
-        "Documentation de construction précise",
+        "Modélisation architecturale pour projets neufs et rénovations",
+        "Utilisation de normes et conventions BIM",
+        "Coordination interdisciplinaire facilitée",
+        "Documentation claire et centralisée",
+        "Optimisation des flux de travail BIM",
       ],
     },
     {
       icon: <FileImage className="w-10 h-10 sm:w-12 sm:h-12" />,
-      title: "Infographie et rendu réaliste",
+      title: "Infographie & Rendu Réaliste",
       description:
-        "Programmes de formation personnalisés pour vos équipes, adaptés à vos besoins spécifiques.",
+        "Des visuels 3D percutants pour valoriser vos idées et convaincre vos clients.",
       longDescription:
-        "Nos services d'infographie et de rendu réaliste transforment vos modèles BIM en visualisations photoréalistes impressionnantes. Ces images haute définition sont parfaites pour le marketing, les présentations clients ou les études d'impact visuel.",
+        "Je crée des rendus 3D réalistes et soignés pour mettre en valeur vos projets. Que ce soit pour une présentation client, une mise en vente ou un concours, je vous aide à capter l’attention avec des visuels impactants. Je peux aussi intervenir ponctuellement pour soulager vos équipes en cas de surcharge.",
       features: [
-        "Rendus photoréalistes extérieurs et intérieurs",
-        "Animations et visites virtuelles 3D",
-        "Intégration environnementale",
-        "Études d'éclairage et d'ombrage",
-        "Supports marketing et communication",
+        "Rendus réalistes haute qualité",
+        "Mise en valeur des matériaux et de la lumière",
+        "Animation et vues immersives possibles",
+        "Formats adaptés à vos supports de présentation",
+        "Collaboration souple en sous-traitance",
       ],
     },
     {
       icon: <Presentation className="w-10 h-10 sm:w-12 sm:h-12" />,
       title: "Gestion de Projet BIM",
       description:
-        "Pilotage de projets BIM, coordination des équipes et mise en place de processus collaboratifs.",
+        "Structuration et coordination de projets BIM pour un déroulement fluide et maîtrisé.",
       longDescription:
-        "Notre service de gestion de projet BIM assure une coordination parfaite entre tous les intervenants d'un projet. Nous implémentons des processus collaboratifs efficaces, gérons les flux de travail et supervisons la qualité des modèles pour garantir le succès de votre projet.",
+        "Je vous accompagne dans la gestion de vos projets BIM, de la structuration des maquettes à la coordination entre disciplines. L’objectif : anticiper les problèmes, fluidifier les échanges, et faire avancer le projet sans accroc, tout en garantissant la qualité et la cohérence des livrables.",
       features: [
-        "Définition et mise en œuvre du plan d'exécution BIM",
-        "Coordination des équipes multidisciplinaires",
-        "Gestion des échanges d'information",
-        "Contrôle qualité des modèles",
-        "Résolution de conflits techniques",
+        "Mise en place de la stratégie BIM",
+        "Organisation et structuration des maquettes",
+        "Détection et gestion des conflits",
+        "Suivi des échanges entre intervenants",
+        "Assistance à la coordination BIM",
       ],
     },
     {
       icon: <FileCheck2 className="w-10 h-10 sm:w-12 sm:h-12" />,
-      title: "Relevé de l'existant",
+      title: "Relevé de l’Existant",
       description:
-        "Accompagnement dans la définition et la mise en œuvre de votre stratégie BIM.",
+        "Création de modèles 3D précis à partir de l’existant pour vos projets de rénovation ou d’extension.",
       longDescription:
-        "Notre service de relevé de l'existant utilise les technologies de scan 3D et de photogrammétrie pour capturer avec précision l'état actuel des bâtiments et infrastructures. Ces données servent de base fiable pour vos projets de rénovation, d'extension ou de documentation patrimoniale.",
+        "Je réalise des relevés de bâtiments existants via mesures terrain ou à partir de nuages de points, pour produire des modèles 3D à jour et exploitables. C’est un outil clé pour bien démarrer un projet de rénovation ou une étude de faisabilité, avec une base fiable et complète.",
       features: [
-        "Scan laser 3D haute précision",
-        "Photogrammétrie avancée",
-        "Conversion des nuages de points en modèles BIM",
-        "Documentation précise de l'existant",
-        "Support pour projets de rénovation et conservation",
+        "Relevés sur site ou exploitation de nuages de points",
+        "Modélisation fidèle de l’existant",
+        "Formats compatibles avec votre environnement BIM",
+        "Support pour études de faisabilité",
+        "Base de travail fiable pour rénovation ou extension",
       ],
     },
   ];
@@ -398,18 +397,39 @@ const Footer = () => {
               Suivez-nous
             </h3>
             <div className="flex flex-wrap gap-2 sm:gap-4 sm:flex-nowrap">
-              {["LinkedIn", "Twitter", "Facebook"].map((social) => (
-                <motion.a
-                  key={social}
-                  href="#"
-                  whileHover={{ scale: 1.1 }}
-                  whileTap={{ scale: 0.95 }}
-                  className="px-2 py-1.5 text-xs transition-colors rounded-md sm:text-sm sm:px-3 sm:py-2 text-gray-300 hover:text-white hover:bg-accent/20"
-                  aria-label={social}
-                >
-                  {social}
-                </motion.a>
-              ))}
+              <motion.a
+                href="https://www.linkedin.com/in/thomas-peyrondet-bazile-4736b4205"
+                target="_blank"
+                rel="noopener noreferrer"
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.95 }}
+                className="px-2 py-1.5 text-xs transition-colors rounded-md sm:text-sm sm:px-3 sm:py-2 text-gray-300 hover:text-white hover:bg-accent/20"
+                aria-label="LinkedIn"
+              >
+                LinkedIn
+              </motion.a>
+              <motion.a
+                href="https://www.instagram.com/la_bimerie/"
+                target="_blank"
+                rel="noopener noreferrer"
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.95 }}
+                className="px-2 py-1.5 text-xs transition-colors rounded-md sm:text-sm sm:px-3 sm:py-2 text-gray-300 hover:text-white hover:bg-accent/20"
+                aria-label="Instagram"
+              >
+                Instagram
+              </motion.a>
+              <motion.a
+                href="https://www.malt.fr/profile/thomaspeyrondetbazile?overview"
+                target="_blank"
+                rel="noopener noreferrer"
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.95 }}
+                className="px-2 py-1.5 text-xs transition-colors rounded-md sm:text-sm sm:px-3 sm:py-2 text-gray-300 hover:text-white hover:bg-accent/20"
+                aria-label="Malt"
+              >
+                Malt
+              </motion.a>
             </div>
           </div>
         </div>

@@ -1,29 +1,9 @@
 export const PartnersBanner = () => {
   const partners = [
     {
-      name: "Autodesk",
-      logo: "https://brand.autodesk.com/app/uploads/2021/04/primary-logo-1.svg",
-      url: "https://www.autodesk.com",
-    },
-    {
-      name: "Trimble",
-      logo: "https://www.trimble.com/images/logo-trimble-black.svg",
-      url: "https://www.trimble.com",
-    },
-    {
-      name: "Graphisoft",
-      logo: "https://upload.wikimedia.org/wikipedia/commons/e/e6/Archicad-logo-1.png",
-      url: "https://www.graphisoft.com",
-    },
-    {
-      name: "Nemetschek",
-      logo: "https://www.nemetschek.com/sites/default/files/2024-09/NemetschekGroup%20RGB%20Schwarz.png",
-      url: "https://www.nemetschek.com",
-    },
-    {
-      name: "Bentley",
-      logo: "https://www.carlogos.org/car-logos/bentley-logo-2002-black-download.png",
-      url: "https://www.bentley.com",
+      name: "Planta Services",
+      logo: "https://www.plantaservices.fr/wp-content/uploads/2024/10/298422158_429047909243589_7237415736216501716_n.jpg",
+      url: "https://www.plantaservices.fr/",
     },
   ];
 
@@ -49,7 +29,7 @@ export const PartnersBanner = () => {
               <img
                 src={partner.logo}
                 alt={`${partner.name} logo`}
-                className="object-contain w-auto h-24 md:h-28 lg:h-32"
+                className="object-contain w-auto h-12 rounded-full lg:h-36"
                 loading="lazy"
                 width="auto"
                 height="128"

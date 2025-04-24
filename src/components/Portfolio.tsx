@@ -1,18 +1,5 @@
 import { useEffect, useState } from "react";
-import { getProjects } from "../services/api";
-
-// Type adapté à la structure réelle
-type ProjectImage = {
-  id: number;
-  name: string;
-  url?: string;
-  formats?: {
-    thumbnail: {
-      url: string;
-    };
-  };
-  // autres propriétés possibles
-};
+import { getProjects, getStrapiMediaUrl } from "../services/api";
 
 type Project = {
   id: number;
@@ -21,8 +8,16 @@ type Project = {
   description: string;
   client: string;
   year: string;
-  image: ProjectImage;
-  // autres propriétés
+  documentId: string;
+  image: {
+    url: string;
+    formats: {
+      thumbnail: { url: string };
+      small: { url: string };
+      medium: { url: string };
+      large: { url: string };
+    };
+  };
 };
 
 export const Portfolio = () => {
@@ -36,7 +31,6 @@ export const Portfolio = () => {
     const fetchProjects = async () => {
       try {
         const data = await getProjects();
-        console.log("Données reçues:", data);
         setProjects(data || []);
       } catch (err) {
         setError("Erreur lors du chargement des projets");
@@ -108,47 +102,50 @@ export const Portfolio = () => {
 
         {/* Grille de projets */}
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {filteredProjects.map((project) => (
-            <div
-              key={project.id}
-              className="overflow-hidden transition-all duration-300 bg-white rounded-lg shadow-md group hover:shadow-xl"
-              onClick={() => setSelectedProject(project)}
-            >
-              <div className="relative overflow-hidden cursor-pointer h-60">
-                {project.image ? (
-                  <img
-                    src={`http://localhost:1337${project.image.url}`}
-                    alt={project.title}
-                    className="object-cover w-full h-full transition-transform duration-500 group-hover:scale-110"
-                    loading="lazy"
-                    width={800}
-                    height={600}
-                  />
-                ) : (
-                  <div className="flex items-center justify-center w-full h-full bg-gray-200">
-                    <span>Image non disponible</span>
+          {filteredProjects.map((project) => {
+            // Use the direct image URL from your actual data structure
+            const imageUrl = project.image?.url
+              ? getStrapiMediaUrl(project.image.url)
+              : undefined;
+
+            return (
+              <div
+                key={project.id}
+                className="overflow-hidden transition-all duration-300 bg-white rounded-lg shadow-md group hover:shadow-xl"
+                onClick={() => setSelectedProject(project)}
+              >
+                <div className="relative overflow-hidden cursor-pointer h-60">
+                  {imageUrl && (
+                    <img
+                      src={imageUrl}
+                      alt={project.title}
+                      className="object-cover w-full h-full transition-transform duration-500 group-hover:scale-110"
+                      loading="lazy"
+                      width={800}
+                      height={600}
+                    />
+                  )}
+                  <div className="absolute inset-0 transition-opacity duration-300 opacity-0 bg-gradient-to-t from-primary/80 to-transparent group-hover:opacity-100"></div>
+                  <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100">
+                    <button className="flex items-center gap-2 px-4 py-2 font-medium transition-all duration-300 transform translate-y-4 bg-white rounded-full text-primary group-hover:translate-y-0">
+                      Voir détails
+                    </button>
                   </div>
-                )}
-                <div className="absolute inset-0 transition-opacity duration-300 opacity-0 bg-gradient-to-t from-primary/80 to-transparent group-hover:opacity-100"></div>
-                <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100">
-                  <button className="flex items-center gap-2 px-4 py-2 font-medium transition-all duration-300 transform translate-y-4 bg-white rounded-full text-primary group-hover:translate-y-0">
-                    Voir détails
-                  </button>
+                </div>
+                <div className="p-4">
+                  <span className="inline-block px-2 py-1 mb-2 text-xs font-medium rounded-md text-accent-dark bg-accent/10">
+                    {project.category}
+                  </span>
+                  <h3 className="mb-2 text-lg font-bold text-primary">
+                    {project.title}
+                  </h3>
+                  <p className="text-sm text-gray-600 line-clamp-2">
+                    {project.description}
+                  </p>
                 </div>
               </div>
-              <div className="p-4">
-                <span className="inline-block px-2 py-1 mb-2 text-xs font-medium rounded-md text-accent-dark bg-accent/10">
-                  {project.category}
-                </span>
-                <h3 className="mb-2 text-lg font-bold text-primary">
-                  {project.title}
-                </h3>
-                <p className="text-sm text-gray-600 line-clamp-2">
-                  {project.description}
-                </p>
-              </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
 
         {/* Modal pour projet sélectionné */}
@@ -164,16 +161,12 @@ export const Portfolio = () => {
               {/* Contenu détaillé du projet */}
               <div className="grid grid-cols-1 md:grid-cols-2">
                 <div className="relative h-72 md:h-full">
-                  {selectedProject.image && selectedProject.image.url ? (
+                  {selectedProject.image?.url && (
                     <img
-                      src={`http://localhost:1337${selectedProject.image.url}`}
+                      src={getStrapiMediaUrl(selectedProject.image.url)}
                       alt={selectedProject.title}
                       className="object-cover w-full h-full"
                     />
-                  ) : (
-                    <div className="flex items-center justify-center w-full h-full bg-gray-200">
-                      <span>Image non disponible</span>
-                    </div>
                   )}
                 </div>
                 <div className="p-6">
