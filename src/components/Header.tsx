@@ -64,6 +64,25 @@ export const Header = () => {
     return () => window.removeEventListener("scroll", throttledScroll);
   }, []);
 
+  // Function to handle anchor navigation
+  const handleNavigation = (id: string) => {
+    const element = document.getElementById(id);
+    if (element) {
+      // Close the mobile menu first
+      setIsOpen(false);
+
+      // Small delay to ensure menu closes smoothly before scrolling
+      setTimeout(() => {
+        element.scrollIntoView({
+          behavior: "smooth",
+          block: "start",
+        });
+        // Update URL without page reload
+        window.history.pushState(null, "", `#${id}`);
+      }, 100);
+    }
+  };
+
   return (
     <header
       className={`fixed w-full z-50 transition-all duration-300 ${
@@ -75,6 +94,10 @@ export const Header = () => {
           href="#accueil"
           className="flex items-center gap-2 text-2xl font-bold text-white font-montserrat"
           aria-label="labimerie accueil"
+          onClick={(e) => {
+            e.preventDefault();
+            handleNavigation("accueil");
+          }}
         >
           <img src={logo} alt="labimerie logo" className="w-12 h-12" />
           <span className="relative">
@@ -89,6 +112,10 @@ export const Header = () => {
               key={item.id}
               item={item}
               isActive={activeSection === item.id}
+              onClick={(e) => {
+                e.preventDefault();
+                handleNavigation(item.id);
+              }}
             />
           ))}
         </div>
@@ -110,7 +137,7 @@ export const Header = () => {
           isOpen={isOpen}
           navItems={navItems}
           activeSection={activeSection}
-          onItemClick={() => setIsOpen(false)}
+          onItemClick={handleNavigation}
         />
       </nav>
     </header>
@@ -120,15 +147,17 @@ export const Header = () => {
 type NavLinkProps = {
   item: NavItem;
   isActive: boolean;
+  onClick: (e: React.MouseEvent) => void;
 };
 
-const NavLink = ({ item, isActive }: NavLinkProps) => (
+const NavLink = ({ item, isActive, onClick }: NavLinkProps) => (
   <a
     href={item.href}
     className={`nav-link relative group px-3 md:px-2 lg:px-3 whitespace-nowrap text-sm lg:text-base ${
       isActive ? "text-white font-medium" : "text-gray-200"
     }`}
     aria-current={isActive ? "page" : undefined}
+    onClick={onClick}
   >
     {item.name}
     <span
@@ -144,7 +173,7 @@ type MobileMenuProps = {
   isOpen: boolean;
   navItems: NavItem[];
   activeSection: string;
-  onItemClick: () => void;
+  onItemClick: (id: string) => void;
 };
 
 const MobileMenu = ({
@@ -172,7 +201,10 @@ const MobileMenu = ({
                 ? "text-white border-accent bg-white/5"
                 : "text-gray-200 border-transparent hover:bg-white/10 hover:border-accent/50"
             }`}
-            onClick={onItemClick}
+            onClick={(e) => {
+              e.preventDefault();
+              onItemClick(item.id);
+            }}
             role="menuitem"
             aria-current={activeSection === item.id ? "page" : undefined}
           >
