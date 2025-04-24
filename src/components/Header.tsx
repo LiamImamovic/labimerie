@@ -83,7 +83,7 @@ export const Header = () => {
           </span>
         </a>
 
-        <div className="hidden space-x-6 md:flex">
+        <div className="hidden md:flex">
           {navItems.map((item) => (
             <NavLink
               key={item.id}
@@ -125,7 +125,7 @@ type NavLinkProps = {
 const NavLink = ({ item, isActive }: NavLinkProps) => (
   <a
     href={item.href}
-    className={`nav-link relative group ${
+    className={`nav-link relative group px-3 md:px-2 lg:px-3 whitespace-nowrap text-sm lg:text-base ${
       isActive ? "text-white font-medium" : "text-gray-200"
     }`}
     aria-current={isActive ? "page" : undefined}
