@@ -25,7 +25,7 @@ export const PartnersBanner = () => {
       <div className="px-4 mx-auto max-w-7xl">
         <h2 className="relative mb-16 text-3xl font-bold text-center text-primary">
           <span className="relative inline-block px-2">
-            Nos Partenaires
+            Mes Partenaires
             <span className="absolute bottom-0 left-0 w-full h-1 rounded-full bg-accent"></span>
           </span>
         </h2>

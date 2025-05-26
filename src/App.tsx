@@ -235,7 +235,7 @@ const Services = () => {
       <div className="max-w-6xl mx-auto">
         <h2 className="relative inline-block mx-auto mb-8 text-2xl font-bold text-center sm:text-3xl sm:mb-12 text-primary">
           <span className="relative">
-            Nos Services
+            Mes Services
             <span className="absolute bottom-0 h-1 rounded-full left-1/4 right-1/4 bg-accent"></span>
           </span>
         </h2>
