@@ -1,9 +1,22 @@
+type Partner = {
+  name: string;
+  logo?: string;
+  url: string;
+  displayType: "logo" | "text";
+};
+
 export const PartnersBanner = () => {
-  const partners = [
+  const partners: Partner[] = [
     {
       name: "Planta Services",
       logo: "https://www.plantaservices.fr/wp-content/uploads/2024/10/298422158_429047909243589_7237415736216501716_n.jpg",
       url: "https://www.plantaservices.fr/",
+      displayType: "logo",
+    },
+    {
+      name: "Imamović",
+      url: "https://liamimamovic.vercel.app/",
+      displayType: "text",
     },
   ];
 
@@ -24,16 +37,22 @@ export const PartnersBanner = () => {
               href={partner.url}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center justify-center"
+              className="flex items-center justify-center transition-transform hover:scale-105"
             >
-              <img
-                src={partner.logo}
-                alt={`${partner.name} logo`}
-                className="object-contain w-auto h-12 rounded-full lg:h-36"
-                loading="lazy"
-                width="auto"
-                height="128"
-              />
+              {partner.displayType === "logo" && partner.logo ? (
+                <img
+                  src={partner.logo}
+                  alt={`${partner.name} logo`}
+                  className="object-contain w-auto h-12 rounded-full lg:h-36"
+                  loading="lazy"
+                  width="auto"
+                  height="128"
+                />
+              ) : (
+                <span className="text-lg font-semibold text-primary md:text-2xl lg:text-3xl">
+                  {partner.name}
+                </span>
+              )}
             </a>
           ))}
         </div>

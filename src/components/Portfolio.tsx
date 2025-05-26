@@ -44,7 +44,6 @@ export const Portfolio = () => {
   }, []);
 
   useEffect(() => {
-    // Reset selected project when category changes
     setSelectedProject(null);
   }, [selectedCategory]);
 
@@ -155,9 +154,30 @@ export const Portfolio = () => {
             onClick={() => setSelectedProject(null)}
           >
             <div
-              className="bg-white rounded-lg max-w-4xl w-full max-h-[90vh] overflow-auto"
+              className="bg-white rounded-lg max-w-4xl w-full max-h-[90vh] overflow-auto relative"
               onClick={(e) => e.stopPropagation()}
             >
+              {/* Bouton de retour */}
+              <button
+                onClick={() => setSelectedProject(null)}
+                className="absolute z-10 p-2 text-white transition-colors rounded-full top-4 right-4 bg-primary/80 hover:bg-primary"
+                aria-label="Fermer"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="w-6 h-6"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M6 18L18 6M6 6l12 12"
+                  />
+                </svg>
+              </button>
               {/* Contenu détaillé du projet */}
               <div className="grid grid-cols-1 md:grid-cols-2">
                 <div className="relative h-72 md:h-full">
