@@ -1,7 +1,7 @@
-import { VercelRequest, VercelResponse } from "@vercel/node";
-import nodemailer from "nodemailer";
+const { VercelRequest, VercelResponse } = require("@vercel/node");
+const nodemailer = require("nodemailer");
 
-export default async function handler(req: VercelRequest, res: VercelResponse) {
+module.exports = async function handler(req, res) {
   // Permettre seulement les requêtes POST
   if (req.method !== "POST") {
     return res
@@ -119,18 +119,17 @@ ${message}
     });
   } catch (error) {
     console.error("Erreur détaillée:", {
-      message: error instanceof Error ? error.message : "Erreur inconnue",
-      code: (error as unknown as { code?: string })?.code,
-      command: (error as unknown as { command?: string })?.command,
-      response: (error as unknown as { response?: string })?.response,
-      responseCode: (error as unknown as { responseCode?: number })
-        ?.responseCode,
+      message: error.message || "Erreur inconnue",
+      code: error.code,
+      command: error.command,
+      response: error.response,
+      responseCode: error.responseCode,
     });
 
     // Messages d'erreur plus spécifiques
     let errorMessage = "Erreur lors de l'envoi de l'email";
 
-    if (error instanceof Error) {
+    if (error.message) {
       if (error.message.includes("authentication")) {
         errorMessage = "Erreur d'authentification email";
       } else if (error.message.includes("timeout")) {
@@ -145,4 +144,4 @@ ${message}
       message: errorMessage,
     });
   }
-}
+};
