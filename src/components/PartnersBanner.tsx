@@ -14,7 +14,7 @@ export const PartnersBanner = () => {
       displayType: "logo",
     },
     {
-      name: "Imamović",
+      name: "Oyster Agency",
       url: "https://liamimamovic.vercel.app/",
       displayType: "text",
     },

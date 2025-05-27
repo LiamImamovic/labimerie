@@ -24,13 +24,4 @@ export default defineConfig({
     "process.env.EMAIL_USER": JSON.stringify(env["EMAIL_USER"] || ""),
     "process.env.EMAIL_PASS": JSON.stringify(env["EMAIL_PASS"] || ""),
   },
-  server: {
-    proxy: {
-      "/api": {
-        target: "https://labimerie-strapi.onrender.com",
-        changeOrigin: true,
-        rewrite: (path) => path,
-      },
-    },
-  },
 });

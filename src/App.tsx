@@ -51,7 +51,7 @@ const Hero = () => {
         className="relative max-w-4xl px-4 mx-auto text-center"
       >
         <h1 className="mb-4 text-3xl font-bold text-white sm:text-4xl md:text-5xl lg:text-6xl md:mb-6">
-          L'art du numérique, taillé sur mesure
+          Je numérise vos idées, vous les réalisez.
         </h1>
         <p className="mb-6 text-lg text-gray-200 sm:text-xl md:text-2xl md:mb-8">
           Optimisez votre workflow BIM avec un consultant expérimenté
@@ -114,9 +114,13 @@ const About = () => {
             <span className="absolute bottom-0 left-0 w-1/2 h-1 rounded-full bg-accent"></span>
           </h2>
           <p className="mb-6 text-base sm:text-lg">
-            Ingénieur Génie civil Spécialisé en numérique pour la construction,
-            j'accompagne les professionnels de la construction dans leur
-            transition vers le numérique en les aidant dans leurs démarches BIM.
+            Je m'appelle Thomas, je suis passionné par l’architecture, la
+            modélisation 3D et tout ce qui touche au BIM (Building Information
+            Modeling). Après plusieurs années d’études et de projets
+            enrichissants, j’ai eu envie de me lancer en solo. C’est comme ça
+            qu’est née La Bimerie, une micro-entreprise installée à Lacanau, qui
+            propose des solutions numériques sur-mesure pour accompagner les
+            pros du bâtiment dans leurs projets.
           </p>
 
           <div className="space-y-4">
@@ -359,7 +363,7 @@ const Footer = () => {
               <span className="absolute bottom-0 left-0 w-1/2 h-0.5 bg-accent"></span>
             </h3>
             <p className="text-sm text-gray-300 sm:text-base">
-              L'art du numérique, taillé sur mesure
+              Je numérise vos idées, vous les réalisez.
             </p>
             <div className="mt-3 sm:mt-4">
               <a
