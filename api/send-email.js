@@ -1,6 +1,6 @@
-const nodemailer = require("nodemailer");
+import nodemailer from "nodemailer";
 
-module.exports = async function handler(req, res) {
+export default async function handler(req, res) {
   // Permettre seulement les requêtes POST
   if (req.method !== "POST") {
     return res
@@ -143,4 +143,4 @@ ${message}
       message: errorMessage,
     });
   }
-};
+}
