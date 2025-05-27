@@ -12,6 +12,8 @@ import {
 } from "lucide-react";
 import { lazy, Suspense, useEffect, useState } from "react";
 import { useInView } from "react-intersection-observer";
+import { BlogPreview } from "./components/BlogPreview";
+import { FAQ } from "./components/FAQ";
 
 const LazyPartnersBanner = lazy(() => import("./components/PartnersBanner"));
 const LazyContact = lazy(() => import("./components/Contact"));
@@ -51,21 +53,26 @@ const Hero = () => {
         className="relative max-w-4xl px-4 mx-auto text-center"
       >
         <h1 className="mb-4 text-3xl font-bold text-white sm:text-4xl md:text-5xl lg:text-6xl md:mb-6">
-          Je numérise vos idées, vous les réalisez.
+          Consultant BIM Expert à Lacanau
+          <hr className="w-1/2 mx-auto my-4 border-white" />
+          <span className="block mt-2 text-2xl sm:text-3xl md:text-4xl lg:text-5xl">
+            Je numérise vos idées, vous les réalisez
+          </span>
         </h1>
-        <p className="mb-6 text-lg text-gray-200 sm:text-xl md:text-2xl md:mb-8">
-          Optimisez votre workflow BIM avec un consultant expérimenté
+        <p className="mb-8 text-lg text-gray-200 sm:text-xl md:text-2xl md:mb-8">
+          Modélisation 3D • Rendus réalistes • Solutions BIM sur-mesure pour vos
+          projets de construction
         </p>
         <motion.button
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
           className="px-5 py-2.5 text-sm sm:text-base sm:px-6 sm:py-3 btn-primary"
-          aria-label="Démarrer votre projet"
+          aria-label="Contactez Thomas pour démarrer votre projet BIM"
           onClick={() => {
             window.location.href = "#contact";
           }}
         >
-          Démarrer votre projet
+          Obtenir un devis gratuit
         </motion.button>
       </motion.div>
 
@@ -99,7 +106,7 @@ const About = () => {
         <div className="relative order-2 overflow-hidden rounded-lg shadow-xl group md:order-1">
           <img
             src="/images/thomas.JPEG"
-            alt="Portrait du consultant BIM"
+            alt="Thomas, consultant BIM expert à Lacanau, spécialisé en modélisation 3D et rendus réalistes"
             className="object-cover w-full h-auto transition-all duration-700 rounded-lg shadow-md group-hover:scale-105 group-hover:saturate-110"
             loading="lazy"
             width="800"
@@ -110,17 +117,16 @@ const About = () => {
 
         <div className="order-1 md:order-2">
           <h2 className="relative inline-block mb-4 text-2xl font-bold sm:text-3xl text-primary sm:mb-6">
-            5 ans d'expertise en BIM
+            Thomas, 5 ans d'expertise BIM à Lacanau
             <span className="absolute bottom-0 left-0 w-1/2 h-1 rounded-full bg-accent"></span>
           </h2>
           <p className="mb-6 text-base sm:text-lg">
-            Je m'appelle Thomas, je suis passionné par l’architecture, la
-            modélisation 3D et tout ce qui touche au BIM (Building Information
-            Modeling). Après plusieurs années d’études et de projets
-            enrichissants, j’ai eu envie de me lancer en solo. C’est comme ça
-            qu’est née La Bimerie, une micro-entreprise installée à Lacanau, qui
-            propose des solutions numériques sur-mesure pour accompagner les
-            pros du bâtiment dans leurs projets.
+            Je m'appelle Thomas, consultant BIM passionné par l'architecture et
+            la modélisation 3D. Basé à Lacanau en Gironde, j'accompagne les
+            professionnels du bâtiment dans leurs projets avec des solutions
+            numériques innovantes. La Bimerie propose des services de
+            modélisation BIM, rendus 3D réalistes et formation aux outils
+            numériques.
           </p>
 
           <div className="space-y-4">
@@ -606,32 +612,36 @@ const ErrorBoundary = ({ children }: { children: React.ReactNode }) => {
 export const App = () => {
   return (
     <ErrorBoundary>
-      <div className="min-h-screen">
+      <div className="App">
         <PageLoader />
         <SmoothScroll />
+        <ScrollToTop />
+
         <Suspense fallback={<ComponentLoader />}>
           <LazyHeader />
         </Suspense>
-        <main>
-          <Hero />
-          <About />
-          <Services />
-          <Suspense fallback={<ComponentLoader />}>
-            <div className="min-h-screen">
-              <LazyPortfolio />
-            </div>
-          </Suspense>
-          <Suspense fallback={<ComponentLoader />}>
-            <div className="">
-              <LazyPartnersBanner />
-            </div>
-          </Suspense>
-          <Suspense fallback={<ComponentLoader />}>
-            <LazyContact />
-          </Suspense>
-        </main>
+
+        <Hero />
+        <About />
+        <Services />
+
+        <Suspense fallback={<ComponentLoader />}>
+          <LazyPortfolio />
+        </Suspense>
+
+        <Suspense fallback={<ComponentLoader />}>
+          <LazyPartnersBanner />
+        </Suspense>
+
+        {/* Nouveaux composants SEO */}
+        <FAQ />
+        <BlogPreview />
+
+        <Suspense fallback={<ComponentLoader />}>
+          <LazyContact />
+        </Suspense>
+
         <Footer />
-        <ScrollToTop />
       </div>
     </ErrorBoundary>
   );

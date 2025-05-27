@@ -1,0 +1,17 @@
+User-agent: *
+Allow: /
+
+# Sitemaps
+Sitemap: https://www.labimerie.fr/sitemap.xml
+
+# Éviter l'indexation des fichiers de build
+Disallow: /node_modules/
+Disallow: /src/
+Disallow: /.git/
+Disallow: /dist/
+
+# Éviter l'indexation des images temporaires
+Disallow: /images/temp/
+
+# Crawl-delay pour éviter la surcharge
+Crawl-delay: 1 
