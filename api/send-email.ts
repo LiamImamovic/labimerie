@@ -19,22 +19,53 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     });
   }
 
+  // Vérifier les variables d'environnement
+  if (!process.env.EMAIL_USER || !process.env.EMAIL_PASS) {
+    console.error("Variables d'environnement manquantes");
+    return res.status(500).json({
+      success: false,
+      message: "Configuration email manquante",
+    });
+  }
+
   try {
-    // Configuration du transporteur email avec les paramètres Ionos
+    // Configuration du transporteur email avec les paramètres Ionos optimisés
     const transporter = nodemailer.createTransport({
       host: "smtp.ionos.fr",
       port: 465,
-      secure: true, // true pour le port 465, false pour les autres ports
+      secure: true, // true pour SSL sur port 465
       auth: {
         user: process.env.EMAIL_USER,
         pass: process.env.EMAIL_PASS,
       },
+      tls: {
+        // Accepter les certificats auto-signés si nécessaire
+        rejectUnauthorized: false,
+        // Forcer TLS version
+        minVersion: "TLSv1.2",
+      },
+      // Timeout plus long pour Ionos
+      connectionTimeout: 60000, // 60 secondes
+      greetingTimeout: 30000, // 30 secondes
+      socketTimeout: 60000, // 60 secondes
     });
+
+    console.log("Tentative de connexion SMTP...");
+
+    // Tester la connexion avant d'envoyer
+    try {
+      await transporter.verify();
+      console.log("Connexion SMTP vérifiée avec succès");
+    } catch (verifyError) {
+      console.error("Erreur de vérification SMTP:", verifyError);
+      // Continuer quand même, parfois verify() échoue mais sendMail() fonctionne
+    }
 
     // Configuration de l'email
     const mailOptions = {
-      from: process.env.EMAIL_USER,
-      to: "contact@labimerie.fr", // Email de destination
+      from: `"La Bimerie" <${process.env.EMAIL_USER}>`, // Nom d'affichage + email
+      to: "contact@labimerie.fr",
+      replyTo: email, // Permettre de répondre directement au client
       subject: `Nouveau message de ${name}`,
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
@@ -51,7 +82,10 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
           
           <div style="background-color: #ffffff; padding: 20px; border-left: 4px solid #007bff; margin: 20px 0;">
             <h3 style="color: #333; margin-top: 0;">Message :</h3>
-            <p style="line-height: 1.6; color: #555;">${message}</p>
+            <p style="line-height: 1.6; color: #555;">${message.replace(
+              /\n/g,
+              "<br>",
+            )}</p>
           </div>
           
           <div style="text-align: center; margin-top: 30px; padding-top: 20px; border-top: 1px solid #eee;">
@@ -61,20 +95,54 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
           </div>
         </div>
       `,
+      // Version texte de fallback
+      text: `
+Nouveau message depuis le site web La Bimerie
+
+Informations du contact :
+Nom : ${name}
+Email : ${email}
+Téléphone : ${phone}
+
+Message :
+${message}
+      `,
     };
 
-    // Envoi de l'email
-    await transporter.sendMail(mailOptions);
+    console.log("Envoi de l'email...");
+    const result = await transporter.sendMail(mailOptions);
+    console.log("Email envoyé avec succès:", result.messageId);
 
     return res.status(200).json({
       success: true,
       message: "Email envoyé avec succès",
     });
   } catch (error) {
-    console.error("Erreur lors de l'envoi de l'email:", error);
+    console.error("Erreur détaillée:", {
+      message: error instanceof Error ? error.message : "Erreur inconnue",
+      code: (error as unknown as { code?: string })?.code,
+      command: (error as unknown as { command?: string })?.command,
+      response: (error as unknown as { response?: string })?.response,
+      responseCode: (error as unknown as { responseCode?: number })
+        ?.responseCode,
+    });
+
+    // Messages d'erreur plus spécifiques
+    let errorMessage = "Erreur lors de l'envoi de l'email";
+
+    if (error instanceof Error) {
+      if (error.message.includes("authentication")) {
+        errorMessage = "Erreur d'authentification email";
+      } else if (error.message.includes("timeout")) {
+        errorMessage = "Timeout de connexion email";
+      } else if (error.message.includes("connection")) {
+        errorMessage = "Erreur de connexion au serveur email";
+      }
+    }
+
     return res.status(500).json({
       success: false,
-      message: "Erreur lors de l'envoi de l'email",
+      message: errorMessage,
     });
   }
 }
